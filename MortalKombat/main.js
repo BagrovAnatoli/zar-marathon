@@ -22,7 +22,12 @@ const player2 = {
 	}
 };
 
-let isOneLose = false; //флаг, чтобы вторая надпись о поражении не показывалась, если оба проигрывают
+/* isOneLose
+флаг, чтобы вторая надпись о поражении не показывалась, если оба проигрывают 
+одновременно. К сожалению, в этом случае преимущество у того, для кого 
+функция changeHP вызывается позже, в данном случае, у второго игрока.
+*/
+let isOneLose = false;
 
 function createElement(tag, className) {
 	const $tag = document.createElement(tag);
@@ -62,17 +67,18 @@ function changeHP(player) {
 	const $playerLife = document.querySelector('.player' + player.player + ' .life');
 	player.hp -= Math.ceil(Math.random() * 20); // от 1 до 20
 
-	if (player.hp < 0) { // поставил это условие перед отображением жизни
+	if (player.hp < 0) { // поставил это условие перед отображением жизни, чтобы не делать несколько проверок на отрицательную жизнь
 		player.hp = 0; // (*)
 		if(!isOneLose){ // если до этого никто не проигрывал
-			$arenas.appendChild(playerLose(player.name));	
+			$arenas.appendChild(playerWin(getAdversary(player).name));
+			$randomButton.disabled = true;	
 		}
 		isOneLose = true;
 	}
 
 	// const width = (player.hp < 0 ? 0 : player.hp) + '%'; // вместо этого добавил строку отмеченную(*)
 	const width = player.hp + '%';
-	console.log('width:', width, 'hp:', player.hp);
+	console.log('player', player.name, 'width:', width, 'hp:', player.hp);
 
 	$playerLife.style.width = player.hp + '%';
 	
@@ -85,6 +91,18 @@ function playerLose(name) {
 	$loseTitle.innerText = name + ' lose';
 
 	return $loseTitle;
+}
+
+function playerWin(name) {
+	const $winTitle = createElement('div', 'loseTitle');
+	$winTitle.innerText = name + ' win';
+
+	return $winTitle;
+}
+
+function getAdversary (player) { // вернёт объект соперника
+	if (player.player === 1) { return player2; }
+	if (player.player === 2) { return player1; }
 }
 
 $randomButton.addEventListener('click', function() {
