@@ -1,6 +1,8 @@
+const $arenas = document.querySelector('.arenas');
 const player1 = {
+	player: 1,
 	name: 'KITANA',
-	hp: 80,
+	hp: 100,
 	img: 'http://reactmarathon-api.herokuapp.com/assets/kitana.gif',
 	weapon: ['шашка', 'нож', 'лук'],
 	attack: function(){
@@ -9,8 +11,9 @@ const player1 = {
 };
 
 const player2 = {
+	player: 2,
 	name: 'SUB-ZERO',
-	hp: 40,
+	hp: 100,
 	img: 'http://reactmarathon-api.herokuapp.com/assets/subzero.gif',
 	weapon: ['булава', 'меч', 'щит'],
 	attack: function(){
@@ -18,37 +21,39 @@ const player2 = {
 	}
 };
 
-const createPlayer = function(playerClass, player){
-	$player = document.createElement('div');
-	$player.classList.add(playerClass);
+function createElement(tag, className) {
+	const $tag = document.createElement(tag);
 
-	$progressbar = document.createElement('div');
-	$progressbar.classList.add('progressbar');
-
-		$life = document.createElement('div');
-		$life.classList.add('life');
-		$life.style.width = player.hp + '%';
-
-		$name = document.createElement('div');
-		$name.classList.add('name');
-		$name.innerText = player.name;
-
-		$progressbar.appendChild($life);
-		$progressbar.appendChild($name);
-
-	$character = document.createElement('div');
-	$character.classList.add('character');
-
-		$img = document.createElement('img');
-		$img.src = player.img;
-
-		$character.appendChild($img);
+	if (className) {
+		$tag.classList.add(className);	
+	}
 	
+	return $tag;
+}
+
+const createPlayer = function(player){
+	const $player = createElement('div', 'player' + player.player);
+	const $progressbar = createElement('div', 'progressbar');
+	const $character = createElement('div', 'character');
+	const $life = createElement('div', 'life');
+	const $name = createElement('div', 'name');
+	const $img = createElement('img');
+
+	$life.style.width = player.hp + '%';
+	$name.innerText = player.name;
+	$img.src = player.img;
+
+	$progressbar.appendChild($life);
+	$progressbar.appendChild($name);
+
+
+	$character.appendChild($img);
+
 	$player.appendChild($progressbar);
 	$player.appendChild($character);
 
-	document.querySelector('.arenas').appendChild($player);
+	return $player;
 };
 
-createPlayer('player1', player1);
-createPlayer('player2', player2);
+$arenas.appendChild(createPlayer(player1));
+$arenas.appendChild(createPlayer(player2));
