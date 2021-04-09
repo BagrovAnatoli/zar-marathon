@@ -58,7 +58,7 @@ function createPlayer(player) {
 
 function changeHP(player) {
 	const $playerLife = document.querySelector('.player' + player.player + ' .life');
-	player.hp -= 20;
+	player.hp -= Math.ceil(Math.random() * 20); // от 1 до 20
 
 	if (player.hp < 0) { // поставил это условие перед отображением жизни
 		player.hp = 0;
@@ -66,8 +66,8 @@ function changeHP(player) {
 	}
 
 	// const width = (player.hp < 0 ? 0 : player.hp) + '%';
-	// const width = player.hp + '%';
-	// console.log('width:', width, 'hp:', player.hp);
+	const width = player.hp + '%';
+	console.log('width:', width, 'hp:', player.hp);
 
 	$playerLife.style.width = player.hp + '%';
 	
@@ -75,7 +75,7 @@ function changeHP(player) {
 	
 }
 
-function playerLose(name) {
+function playerLose(name) { // когда проигрывают оба, то сообщения показываются друг на друге
 	const $loseTitle = createElement('div', 'loseTitle');
 	$loseTitle.innerText = name + ' lose';
 
