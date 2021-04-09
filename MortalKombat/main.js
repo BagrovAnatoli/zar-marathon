@@ -22,6 +22,8 @@ const player2 = {
 	}
 };
 
+let isOneLose = false; //флаг, чтобы вторая надпись о поражении не показывалась, если оба проигрывают
+
 function createElement(tag, className) {
 	const $tag = document.createElement(tag);
 
@@ -61,11 +63,14 @@ function changeHP(player) {
 	player.hp -= Math.ceil(Math.random() * 20); // от 1 до 20
 
 	if (player.hp < 0) { // поставил это условие перед отображением жизни
-		player.hp = 0;
-		$arenas.appendChild(playerLose(player.name));
+		player.hp = 0; // (*)
+		if(!isOneLose){ // если до этого никто не проигрывал
+			$arenas.appendChild(playerLose(player.name));	
+		}
+		isOneLose = true;
 	}
 
-	// const width = (player.hp < 0 ? 0 : player.hp) + '%';
+	// const width = (player.hp < 0 ? 0 : player.hp) + '%'; // вместо этого добавил строку отмеченную(*)
 	const width = player.hp + '%';
 	console.log('width:', width, 'hp:', player.hp);
 
@@ -75,7 +80,7 @@ function changeHP(player) {
 	
 }
 
-function playerLose(name) { // когда проигрывают оба, то сообщения показываются друг на друге
+function playerLose(name) {
 	const $loseTitle = createElement('div', 'loseTitle');
 	$loseTitle.innerText = name + ' lose';
 
