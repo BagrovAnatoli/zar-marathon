@@ -1,4 +1,5 @@
 const $arenas = document.querySelector('.arenas');
+const $randomButton = document.querySelector('.button');
 const player1 = {
 	player: 1,
 	name: 'KITANA',
@@ -31,7 +32,7 @@ function createElement(tag, className) {
 	return $tag;
 }
 
-const createPlayer = function(player){
+function createPlayer(player) {
 	const $player = createElement('div', 'player' + player.player);
 	const $progressbar = createElement('div', 'progressbar');
 	const $character = createElement('div', 'character');
@@ -54,6 +55,38 @@ const createPlayer = function(player){
 
 	return $player;
 };
+
+function changeHP(player) {
+	const $playerLife = document.querySelector('.player' + player.player + ' .life');
+	player.hp -= 20;
+
+	if (player.hp < 0) { // поставил это условие перед отображением жизни
+		player.hp = 0;
+		$arenas.appendChild(playerLose(player.name));
+	}
+
+	// const width = (player.hp < 0 ? 0 : player.hp) + '%';
+	// const width = player.hp + '%';
+	// console.log('width:', width, 'hp:', player.hp);
+
+	$playerLife.style.width = player.hp + '%';
+	
+
+	
+}
+
+function playerLose(name) {
+	const $loseTitle = createElement('div', 'loseTitle');
+	$loseTitle.innerText = name + ' lose';
+
+	return $loseTitle;
+}
+
+$randomButton.addEventListener('click', function() {
+	console.log('####: Click Random Button');
+	changeHP(player1);
+	changeHP(player2);
+});
 
 $arenas.appendChild(createPlayer(player1));
 $arenas.appendChild(createPlayer(player2));
