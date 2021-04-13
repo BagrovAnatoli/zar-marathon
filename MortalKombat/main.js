@@ -8,7 +8,10 @@ const player1 = {
 	weapon: ['шашка', 'нож', 'лук'],
 	attack: function(){
 		console.log(this.name + ' Fight...');
-	}
+	},
+	changeHP: changeHP,
+	elHP: elHP,
+	renderHP: renderHP,
 };
 
 const player2 = {
@@ -19,7 +22,10 @@ const player2 = {
 	weapon: ['булава', 'меч', 'щит'],
 	attack: function(){
 		console.log(this.name + ' Fight...');
-	}
+	},
+	changeHP: changeHP,
+	elHP: elHP,
+	renderHP: renderHP,
 };
 
 function createElement(tag, className) {
@@ -56,22 +62,16 @@ function createPlayer(player) {
 	return $player;
 };
 
-function changeHP(player) {
-	const $playerLife = document.querySelector('.player' + player.player + ' .life');
-	player.hp -= getRandom(20); // от 1 до 20
+function changeHP(deltaHP) {
+	this.hp = this.hp > deltaHP ? this.hp - deltaHP : 0;	
+}
 
-	if (player.hp < 0) { // поставил это условие перед отображением жизни, чтобы не делать несколько проверок на отрицательную жизнь
-		player.hp = 0; // (*)
-	}
+function elHP() {
+	return document.querySelector('.player' + this.player + ' .life');
+}
 
-	// const width = (player.hp < 0 ? 0 : player.hp) + '%'; // вместо этого добавил строку отмеченную(*)
-	const width = player.hp + '%';
-	console.log('player', player.name, 'width:', width, 'hp:', player.hp);
-
-	$playerLife.style.width = player.hp + '%';
-	
-
-	
+function renderHP() {
+	this.elHP().style.width = this.hp + '%';
 }
 
 function playerLose(name) {
@@ -97,15 +97,12 @@ function getRandom(num) {
 	return Math.ceil(Math.random() * num);
 }
 
-function getAdversary (player) { // вернёт объект соперника
-	if (player.player === 1) { return player2; }
-	if (player.player === 2) { return player1; }
-}
-
 $randomButton.addEventListener('click', function() {
 	console.log('####: Click Random Button');
-	changeHP(player1);
-	changeHP(player2);
+	player1.changeHP(getRandom(20));
+	player2.changeHP(getRandom(20));
+	player1.renderHP();
+	player2.renderHP();
 
 	if (player1.hp === 0 || player2.hp === 0) {
 		$randomButton.disabled = true;
