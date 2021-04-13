@@ -62,6 +62,14 @@ function createPlayer(player) {
 	return $player;
 };
 
+function createReloadButton() {
+	const $reloadWrap = createElement('div', 'reloadWrap');
+	const $reloadButton = createElement('button', 'button');
+	$reloadButton.innerText = 'Restart';
+	$reloadWrap.appendChild($reloadButton);
+	return $reloadWrap;
+}
+
 function changeHP(deltaHP) {
 	this.hp = this.hp > deltaHP ? this.hp - deltaHP : 0;	
 }
@@ -119,3 +127,9 @@ $randomButton.addEventListener('click', function() {
 
 $arenas.appendChild(createPlayer(player1));
 $arenas.appendChild(createPlayer(player2));
+const $reloadWrap = createReloadButton();
+$arenas.appendChild($reloadWrap);
+
+$reloadWrap.addEventListener('click', function() {
+	window.location.reload();
+});
