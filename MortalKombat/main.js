@@ -22,13 +22,6 @@ const player2 = {
 	}
 };
 
-/* isOneLose
-флаг, чтобы вторая надпись о поражении не показывалась, если оба проигрывают 
-одновременно. К сожалению, в этом случае преимущество у того, для кого 
-функция changeHP вызывается позже, в данном случае, у второго игрока.
-*/
-let isOneLose = false;
-
 function createElement(tag, className) {
 	const $tag = document.createElement(tag);
 
@@ -65,15 +58,10 @@ function createPlayer(player) {
 
 function changeHP(player) {
 	const $playerLife = document.querySelector('.player' + player.player + ' .life');
-	player.hp -= Math.ceil(Math.random() * 20); // от 1 до 20
+	player.hp -= getRandom(20); // от 1 до 20
 
 	if (player.hp < 0) { // поставил это условие перед отображением жизни, чтобы не делать несколько проверок на отрицательную жизнь
 		player.hp = 0; // (*)
-		if(!isOneLose){ // если до этого никто не проигрывал
-			$arenas.appendChild(playerWin(getAdversary(player).name));
-			$randomButton.disabled = true;	
-		}
-		isOneLose = true;
 	}
 
 	// const width = (player.hp < 0 ? 0 : player.hp) + '%'; // вместо этого добавил строку отмеченную(*)
@@ -93,11 +81,20 @@ function playerLose(name) {
 	return $loseTitle;
 }
 
-function playerWin(name) {
+function playerWins(name) {
 	const $winTitle = createElement('div', 'loseTitle');
-	$winTitle.innerText = name + ' win';
+	if (name) {
+		$winTitle.innerText = name + ' win';
+	} else {
+		$winTitle.innerText = 'draw';
+	}
+	
 
 	return $winTitle;
+}
+
+function getRandom(num) {
+	return Math.ceil(Math.random() * num);
 }
 
 function getAdversary (player) { // вернёт объект соперника
@@ -109,6 +106,18 @@ $randomButton.addEventListener('click', function() {
 	console.log('####: Click Random Button');
 	changeHP(player1);
 	changeHP(player2);
+
+	if (player1.hp === 0 || player2.hp === 0) {
+		$randomButton.disabled = true;
+	}
+
+	if (player1.hp === 0 && player1.hp < player2.hp) {
+		$arenas.appendChild(playerWins(player2.name));
+	} else if (player2.hp === 0 && player2.hp < player1.hp) {
+		$arenas.appendChild(playerWins(player1.name));
+	} else if (player1.hp === 0 && player2.hp === 0) {
+		$arenas.appendChild(playerWins());
+	}
 });
 
 $arenas.appendChild(createPlayer(player1));
