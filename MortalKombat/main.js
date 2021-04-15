@@ -1,6 +1,13 @@
 const $arenas = document.querySelector('.arenas');
 // const $randomButton = document.querySelector('.button');
-const $form = document.querySelector('form.control');
+const $formFight = document.querySelector('.control');
+
+const HIT = {
+    head: 30,
+    body: 25,
+    foot: 20,
+}
+const ATTACK = ['head', 'body', 'foot'];
 
 const player1 = {
 	player: 1,
@@ -133,22 +140,9 @@ function getRandom(num) {
 // 	}
 // });
 
-$form.addEventListener('submit', function(event) {
+$formFight.addEventListener('submit', function(event) {
 	event.preventDefault();
-	console.log('####: event', event);
-	
-	// for (let i = 0; i < $form.length; i++) {
-	// 	const item = $form[i];
-	// 	//console.dir(item);
-	// 	if(input.type === 'radio' || item.type ==='checkbox') {
-	// 		//console.log('####: checked', item.checked);
-	// 		answer[item.value] = item.checked;
-	// 	} else {
-	// 		answer[item.name] = item.value;
-	// 	}
-	// }	
-
-	// console.log(answer);
+	console.dir($formFight);
 });
 
 $arenas.appendChild(createPlayer(player1));
