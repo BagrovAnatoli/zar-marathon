@@ -119,6 +119,8 @@ function getRandom(num) {
 	return Math.ceil(Math.random() * num);
 }
 
+
+
 // $randomButton.addEventListener('click', function() {
 // 	console.log('####: Click Random Button');
 // 	player1.changeHP(getRandom(20));
@@ -140,10 +142,24 @@ function getRandom(num) {
 // 	}
 // });
 
-$formFight.addEventListener('submit', function(event) {
-	event.preventDefault();
-	console.dir($formFight);
-});
 
 $arenas.appendChild(createPlayer(player1));
 $arenas.appendChild(createPlayer(player2));
+
+function enemyAttack() {
+	const hit = ATTACK[getRandom(3) - 1];
+	const defence = ATTACK[getRandom(3) - 1];
+	const value = getRandom(HIT[hit]);
+	return {
+		value,
+		hit,
+		defence,
+	}
+}
+
+$formFight.addEventListener('submit', function(event) {
+	event.preventDefault();
+	console.dir($formFight);
+	const enemy = enemyAttack();
+	console.log('####: enemy', enemy);
+});
