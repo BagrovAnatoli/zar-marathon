@@ -1,5 +1,7 @@
 const $arenas = document.querySelector('.arenas');
-const $randomButton = document.querySelector('.button');
+// const $randomButton = document.querySelector('.button');
+const $form = document.querySelector('form.control');
+
 const player1 = {
 	player: 1,
 	name: 'KITANA',
@@ -110,25 +112,43 @@ function getRandom(num) {
 	return Math.ceil(Math.random() * num);
 }
 
-$randomButton.addEventListener('click', function() {
-	console.log('####: Click Random Button');
-	player1.changeHP(getRandom(20));
-	player2.changeHP(getRandom(20));
-	player1.renderHP();
-	player2.renderHP();
+// $randomButton.addEventListener('click', function() {
+// 	console.log('####: Click Random Button');
+// 	player1.changeHP(getRandom(20));
+// 	player2.changeHP(getRandom(20));
+// 	player1.renderHP();
+// 	player2.renderHP();
 
-	if (player1.hp === 0 || player2.hp === 0) {
-		$randomButton.disabled = true;
-		createReloadButton();
-	}
+// 	if (player1.hp === 0 || player2.hp === 0) {
+// 		$randomButton.disabled = true;
+// 		createReloadButton();
+// 	}
 
-	if (player1.hp === 0 && player1.hp < player2.hp) {
-		$arenas.appendChild(playerWins(player2.name));
-	} else if (player2.hp === 0 && player2.hp < player1.hp) {
-		$arenas.appendChild(playerWins(player1.name));
-	} else if (player1.hp === 0 && player2.hp === 0) {
-		$arenas.appendChild(playerWins());
-	}
+// 	if (player1.hp === 0 && player1.hp < player2.hp) {
+// 		$arenas.appendChild(playerWins(player2.name));
+// 	} else if (player2.hp === 0 && player2.hp < player1.hp) {
+// 		$arenas.appendChild(playerWins(player1.name));
+// 	} else if (player1.hp === 0 && player2.hp === 0) {
+// 		$arenas.appendChild(playerWins());
+// 	}
+// });
+
+$form.addEventListener('submit', function(event) {
+	event.preventDefault();
+	console.log('####: event', event);
+	
+	// for (let i = 0; i < $form.length; i++) {
+	// 	const item = $form[i];
+	// 	//console.dir(item);
+	// 	if(input.type === 'radio' || item.type ==='checkbox') {
+	// 		//console.log('####: checked', item.checked);
+	// 		answer[item.value] = item.checked;
+	// 	} else {
+	// 		answer[item.name] = item.value;
+	// 	}
+	// }	
+
+	// console.log(answer);
 });
 
 $arenas.appendChild(createPlayer(player1));
