@@ -148,14 +148,22 @@ $arenas.appendChild(createPlayer(player1));
 $arenas.appendChild(createPlayer(player2));
 
 function enemyAttack() {
-	const hit = ATTACK[getRandom(3) - 1];
-	const defence = ATTACK[getRandom(3) - 1];
-	const value = getRandom(HIT[hit]);
+	const hit = getRandomTarget();
+	const defence = getRandomTarget();
+	const value = getValue(hit);
 	return {
 		value,
 		hit,
 		defence,
 	}
+}
+
+function getRandomTarget() {
+	return ATTACK[getRandom(3) - 1];
+}
+
+function getValue(target) {
+	return getRandom(HIT[target]);
 }
 
 $formFight.addEventListener('submit', function(event) {
@@ -168,7 +176,7 @@ $formFight.addEventListener('submit', function(event) {
 	for (let item of $formFight) {
 		//console.dir(item);
 		if (item.checked && item.name === 'hit') {
-			attack.value = getRandom(HIT[item.value]);
+			attack.value = getValue(item.value);
 			attack.hit = item.value;
 		} else if (item.checked && item.name === 'defence') {
 			attack.defence = item.value;
