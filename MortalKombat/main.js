@@ -161,5 +161,18 @@ $formFight.addEventListener('submit', function(event) {
 	event.preventDefault();
 	console.dir($formFight);
 	const enemy = enemyAttack();
-	console.log('####: enemy', enemy);
+	// console.log('####: enemy', enemy);
+
+	const attack = {}
+
+	for (let item of $formFight) {
+		//console.dir(item);
+		if (item.checked && item.name === 'hit') {
+			attack.value = getRandom(HIT[item.value]);
+			attack.hit = item.value;
+		} else if (item.checked && item.name === 'defence') {
+			attack.defence = item.value;
+		}
+	}
+	console.log('####: attack', attack);
 });
