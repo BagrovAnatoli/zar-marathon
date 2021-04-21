@@ -1,8 +1,6 @@
 import { HIT, ATTACK, logs } from './data.js';
 
-export function getRandom(num) {
-	return Math.ceil(Math.random() * num);
-}
+export const getRandom = (num) => Math.ceil(Math.random() * num);
 
 export function changeHP(deltaHP) {
 	this.hp = this.hp > deltaHP ? this.hp - deltaHP : 0;	
@@ -16,7 +14,7 @@ export function renderHP() {
 	this.elHP().style.width = `${this.hp}%`;
 }
 
-function createElement(tag, className) {
+export const createElement = (tag, className) => {
 	const $tag = document.createElement(tag);
 
 	if (className) {
@@ -26,7 +24,7 @@ function createElement(tag, className) {
 	return $tag;
 }
 
-export function createPlayer(player) {
+export const createPlayer = (player) => {
 	const $player = createElement('div', 'player' + player.player);
 	const $progressbar = createElement('div', 'progressbar');
 	const $character = createElement('div', 'character');
@@ -64,14 +62,14 @@ function createReloadButton() {
 	$arenas.appendChild($reloadButtonDiv);
 }
 
-function playerLose(name) {
+const playerLose = (name) => {
 	const $loseTitle = createElement('div', 'loseTitle');
 	$loseTitle.innerText = `${name} lose`;
 
 	return $loseTitle;
 }
 
-function playerWins(name) {
+const playerWins = (name) => {
 	const $winTitle = createElement('div', 'loseTitle');
 	if (name) {
 		$winTitle.innerText = `${name} win`;
@@ -83,12 +81,12 @@ function playerWins(name) {
 	return $winTitle;
 }
 
-function getTime() {
+const getTime = () => {
 	const date = new Date();
 	return `${date.getHours()}:${date.getMinutes()}`;
 }
 
-export function enemyAttack() {
+export const enemyAttack = () => {
 	const hit = getRandomTarget();
 	const defence = getRandomTarget();
 	const value = getValue(hit);
@@ -99,13 +97,9 @@ export function enemyAttack() {
 	}
 }
 
-function getRandomTarget() {
-	return ATTACK[getRandom(3) - 1];
-}
+const getRandomTarget = () => ATTACK[getRandom(3) - 1];
 
-function getValue(target) {
-	return getRandom(HIT[target]);
-}
+const getValue = (target) => getRandom(HIT[target]);
 
 export function playerAttack () {
 	const attack = {}
@@ -172,20 +166,18 @@ export function generateLogs(chat, type, player1, player2) {
 
 }
 
-function getLogStringId(type) { // возвращает случайный индекс строки соотетсвующего типа из logs
-	return getRandom(logs[type].length) - 1;
-}
+const getLogStringId = (type) => getRandom(logs[type].length) - 1; // возвращает случайный индекс строки соотетсвующего типа из logs
 
-function timeAndReplace(text, player1, player2) { // возвращает строку в формате время и текст с заменой [playerKick] и [playerDefence] на имена
+const timeAndReplace = (text, player1, player2) => { // возвращает строку в формате время и текст с заменой [playerKick] и [playerDefence] на имена
 	let newText = `${getTime()} - `;
 	newText += text.replace('[playerKick]', player1.name).replace('[playerDefence]', player2.name);
 	return newText;
 }
 
-function addLog(chat, text) { // выводит текст ввиде лога на экран
+const addLog = (chat, text) => { // выводит текст ввиде лога на экран
 	console.log(text);
 	const el = `<p>${text}</p>`;
 	chat.insertAdjacentHTML('afterbegin', el);
 }
 
-export default getRandom;
+export default generateLogs;

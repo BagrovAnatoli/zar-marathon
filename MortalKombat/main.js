@@ -1,9 +1,9 @@
 import { player1, player2 } from './player.js';
 import { HIT, ATTACK, logs } from './data.js';
-import getRandom from './utils.js';
 import { changeHP, elHP, renderHP } from './utils.js';
 import { createPlayer, generateLogs, showResult } from './utils.js';
 import { enemyAttack, playerAttack } from './utils.js';
+
 
 const $arenas = document.querySelector('.arenas');
 // const $randomButton = document.querySelector('.button');
@@ -11,14 +11,9 @@ const $formButton = document.querySelector('.button');
 const $formFight = document.querySelector('.control');
 const $chat = document.querySelector('.chat');
 
-
-
-
 $arenas.appendChild(createPlayer(player1));
 $arenas.appendChild(createPlayer(player2));
 generateLogs($chat, 'start', player1, player2);
-
-
 
 
 $formFight.addEventListener('submit', function(event) {
