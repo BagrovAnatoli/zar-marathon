@@ -13,6 +13,8 @@ const $chat = document.querySelector('.chat');
 
 $arenas.appendChild(createPlayer(player1));
 $arenas.appendChild(createPlayer(player2));
+console.log('player1');
+console.log(player1);
 generateLogs($chat, 'start', player1, player2);
 
 
