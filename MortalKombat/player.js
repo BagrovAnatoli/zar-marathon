@@ -1,4 +1,5 @@
 import { changeHP, elHP, renderHP } from './utils.js';
+
 class Player {
 	constructor(props) {
 		console.log('Player');
@@ -17,6 +18,7 @@ class Player {
 		console.log(this.name + ' Fight...');
 	}
 }
+
 export const player1 = new Player({
 	player: 1,
 	name: 'KITANA',

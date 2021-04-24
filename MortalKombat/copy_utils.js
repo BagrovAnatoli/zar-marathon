@@ -1,5 +1,6 @@
 import { HIT, ATTACK, logs } from './data.js';
 
+export const getRandom = (num) => Math.ceil(Math.random() * num);
 
 export function changeHP(deltaHP) {
 	this.hp = this.hp > deltaHP ? this.hp - deltaHP : 0;	
@@ -23,7 +24,32 @@ export const createElement = (tag, className) => {
 	return $tag;
 }
 
-export function createReloadButton($arenas) {
+export const createPlayer = (player) => {
+	const $player = createElement('div', 'player' + player.player);
+	const $progressbar = createElement('div', 'progressbar');
+	const $character = createElement('div', 'character');
+	const $life = createElement('div', 'life');
+	const $name = createElement('div', 'name');
+	const $img = createElement('img');
+
+	$life.style.width = player.hp + '%';
+	$name.innerText = player.name;
+	$img.src = player.img;
+
+	$progressbar.appendChild($life);
+	$progressbar.appendChild($name);
+
+
+	$character.appendChild($img);
+
+	$player.appendChild($progressbar);
+	$player.appendChild($character);
+
+	return $player;
+};
+
+function createReloadButton() {
+	const {$arenas} = this;
 	const $reloadButtonDiv = createElement('div', 'reloadWrap');
 	const $reloadButton = createElement('button', 'button');
 	$reloadButton.innerText = 'Reload';
@@ -36,7 +62,14 @@ export function createReloadButton($arenas) {
 	$arenas.appendChild($reloadButtonDiv);
 }
 
-export const playerWins = (name) => {
+const playerLose = (name) => {
+	const $loseTitle = createElement('div', 'loseTitle');
+	$loseTitle.innerText = `${name} lose`;
+
+	return $loseTitle;
+}
+
+const playerWins = (name) => {
 	const $winTitle = createElement('div', 'loseTitle');
 	if (name) {
 		$winTitle.innerText = `${name} win`;
@@ -46,6 +79,11 @@ export const playerWins = (name) => {
 	
 
 	return $winTitle;
+}
+
+const getTime = () => {
+	const date = new Date();
+	return `${date.getHours()}:${date.getMinutes()}`;
 }
 
 export const enemyAttack = () => {
@@ -59,10 +97,14 @@ export const enemyAttack = () => {
 	}
 }
 
-export function playerAttack (form) {
+const getRandomTarget = () => ATTACK[getRandom(3) - 1];
+
+const getValue = (target) => getRandom(HIT[target]);
+
+export function playerAttack () {
 	const attack = {}
 
-	for (let item of form) {
+	for (let item of this) {
 		if (item.checked && item.name === 'hit') {
 			attack.value = getValue(item.value);
 			attack.hit = item.value;
@@ -76,18 +118,27 @@ export function playerAttack (form) {
 	return attack;
 }
 
-const getRandom = (num) => Math.ceil(Math.random() * num);
+export function showResult() {
+	console.log('showResult this', this);
+	const { player1, player2, $formButton, $arenas, $chat } = this;
+	if (player1.hp === 0 || player2.hp === 0) {
+		$formButton.disabled = true;
+		createReloadButton.call({$arenas});
+	}
 
-const getRandomTarget = () => ATTACK[getRandom(3) - 1];
-
-const getValue = (target) => getRandom(HIT[target]);
-
-const getTime = () => {
-	const date = new Date();
-	return `${date.getHours()}:${date.getMinutes()}`;
+	if (player1.hp === 0 && player1.hp < player2.hp) {
+		$arenas.appendChild(playerWins(player2.name));
+		generateLogs($chat, 'end', player2, player1);
+	} else if (player2.hp === 0 && player2.hp < player1.hp) {
+		$arenas.appendChild(playerWins(player1.name));
+		generateLogs($chat, 'end', player1, player2);
+	} else if (player1.hp === 0 && player2.hp === 0) {
+		$arenas.appendChild(playerWins());
+		generateLogs($chat, 'draw');
+	}
 }
 
-export function generateLogs(chat, type, player1, player2, value) {
+export function generateLogs(chat, type, player1, player2) {
 	const stringId = getLogStringId(type);
 	let text;
 	switch (type) {
@@ -99,7 +150,7 @@ export function generateLogs(chat, type, player1, player2, value) {
 			break;
 		case 'hit':
 			text = timeAndReplace(logs[type][stringId], player1, player2);
-			text += ` -${value} [${player2.hp}/100]`;
+			text += ` -${this.value} [${player2.hp}/100]`;
 			break;
 		case 'defence':
 			text = timeAndReplace(logs[type][stringId], player1, player2);
@@ -109,7 +160,7 @@ export function generateLogs(chat, type, player1, player2, value) {
 			break;
 		default:
 			text = 'Что-то новенькое!';
-			break;
+
 	}
 	addLog(chat, text);
 
