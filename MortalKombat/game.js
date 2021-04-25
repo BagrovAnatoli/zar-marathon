@@ -1,6 +1,21 @@
-import { player1, player2 } from './player.js';
-import { createElement, generateLogs, createReloadButton } from './utils.js';
-import { enemyAttack, playerAttack, playerWins } from './utils.js';
+import Player from './Player/index.js';
+import { generateLogs, createReloadButton, playerWins } from './utils/index.js';
+
+const player1 = new Player({
+	player: 1,
+	name: 'KITANA',
+	hp: 100,
+	img: 'http://reactmarathon-api.herokuapp.com/assets/kitana.gif',
+	rootSelector: 'arenas',
+});
+
+const player2 = new Player({
+	player: 2,
+	name: 'SUB-ZERO',
+	hp: 100,
+	img: 'http://reactmarathon-api.herokuapp.com/assets/subzero.gif',
+	rootSelector: 'arenas',
+});
 
 class Game{
 	constructor(){
@@ -9,8 +24,8 @@ class Game{
 		this.$formFight = document.querySelector('.control');
 		this.$chat = document.querySelector('.chat');
 
-		this.$arenas.appendChild(this.createPlayer(player1));
-		this.$arenas.appendChild(this.createPlayer(player2));
+		player1.createPlayer();
+		player2.createPlayer();
 	}
 	start = () => {
 		console.log('start');
@@ -19,30 +34,6 @@ class Game{
 
 		this.$formFight.addEventListener('submit', this.fightHandler);
 	}
-
-	createPlayer = ({ player, hp, name, img }) => {
-		const $player = createElement('div', `player${player}`);
-		const $progressbar = createElement('div', 'progressbar');
-		const $character = createElement('div', 'character');
-		const $life = createElement('div', 'life');
-		const $name = createElement('div', 'name');
-		const $img = createElement('img');
-
-		$life.style.width = `${hp}%`;
-		$name.innerText = name;
-		$img.src = img;
-
-		$progressbar.appendChild($life);
-		$progressbar.appendChild($name);
-
-
-		$character.appendChild($img);
-
-		$player.appendChild($progressbar);
-		$player.appendChild($character);
-
-		return $player;
-	};
 
 	fightHandler = (event) => {
 		event.preventDefault();
