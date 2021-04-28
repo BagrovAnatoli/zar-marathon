@@ -1,5 +1,5 @@
 import Player from './Player/index.js';
-import { generateLogs, createReloadButton, playerWins } from './utils/index.js';
+import { generateLogs, createReloadButton, playerWins, enemyAttack, playerAttack } from './utils/index.js';
 
 const player1 = new Player({
 	player: 1,
