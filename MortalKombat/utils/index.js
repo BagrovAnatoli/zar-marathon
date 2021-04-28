@@ -16,7 +16,7 @@ export function createReloadButton($arenas) {
 	$reloadButton.innerText = 'Reload';
 
 	$reloadButton.addEventListener('click', function() {
-		window.location.reload();
+		window.location.pathname = 'index.html';
 	});
 
 	$reloadButtonDiv.appendChild($reloadButton);
