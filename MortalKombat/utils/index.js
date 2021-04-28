@@ -63,7 +63,7 @@ export function playerAttack (form) {
 	return attack;
 }
 
-const getRandom = (num) => Math.ceil(Math.random() * num);
+export const getRandom = (num) => Math.ceil(Math.random() * num);
 
 const getRandomTarget = () => ATTACK[getRandom(3) - 1];
 

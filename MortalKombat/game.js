@@ -1,21 +1,8 @@
 import Player from './Player/index.js';
-import { generateLogs, createReloadButton, playerWins, enemyAttack, playerAttack } from './utils/index.js';
+import { generateLogs, createReloadButton, playerWins, enemyAttack, playerAttack, getRandom } from './utils/index.js';
 
-const player1 = new Player({
-	player: 1,
-	name: 'KITANA',
-	hp: 100,
-	img: 'http://reactmarathon-api.herokuapp.com/assets/kitana.gif',
-	rootSelector: 'arenas',
-});
-
-const player2 = new Player({
-	player: 2,
-	name: 'SUB-ZERO',
-	hp: 100,
-	img: 'http://reactmarathon-api.herokuapp.com/assets/subzero.gif',
-	rootSelector: 'arenas',
-});
+let player1;
+let player2;
 
 class Game{
 	constructor(){
@@ -24,15 +11,34 @@ class Game{
 		this.$formFight = document.querySelector('.control');
 		this.$chat = document.querySelector('.chat');
 
+	}
+	start = async () => {
+		console.log('start');
+		const players = await this.getPlayers();
+		const p1 = players[getRandom(players.length)-1];
+		const p2 = players[getRandom(players.length)-1];
+		console.log(p1, p2);
+		player1 = new Player({
+			...p1,
+			player: 1,
+			rootSelector: 'arenas'
+		});
+		player2 = new Player({
+			...p2,
+			player: 2,
+			rootSelector: 'arenas'
+		});
 		player1.createPlayer();
 		player2.createPlayer();
-	}
-	start = () => {
-		console.log('start');
 
 		generateLogs(this.$chat, 'start', player1, player2);
 
 		this.$formFight.addEventListener('submit', this.fightHandler);
+	}
+
+	getPlayers = async () => {
+		const body = fetch('https://reactmarathon-api.herokuapp.com/api/mk/players').then(res => res.json());
+		return body;
 	}
 
 	fightHandler = (event) => {
