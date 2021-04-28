@@ -14,10 +14,15 @@ class Game{
 	}
 	start = async () => {
 		console.log('start');
-		const players = await this.getPlayers();
-		const p1 = players[getRandom(players.length)-1];
-		const p2 = players[getRandom(players.length)-1];
-		console.log(p1, p2);
+		// const players = await this.getPlayers();
+		// const p1 = players[getRandom(players.length)-1];
+		// const p2 = players[getRandom(players.length)-1];
+
+		const p1 = await this.getRandomPlayer();
+		console.log(p1);
+		const p2 = await this.getRandomPlayer();
+		console.log(p2);
+		
 		player1 = new Player({
 			...p1,
 			player: 1,
@@ -38,6 +43,11 @@ class Game{
 
 	getPlayers = async () => {
 		const body = fetch('https://reactmarathon-api.herokuapp.com/api/mk/players').then(res => res.json());
+		return body;
+	}
+
+	getRandomPlayer = async () => {
+		const body = fetch('https://reactmarathon-api.herokuapp.com/api/mk/player/choose').then(res => res.json());
 		return body;
 	}
 
