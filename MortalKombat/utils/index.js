@@ -51,7 +51,7 @@ export function playerAttack (form) {
 
 	for (let item of form) {
 		if (item.checked && item.name === 'hit') {
-			attack.value = getValue(item.value);
+			//attack.value = getValue(item.value);
 			attack.hit = item.value;
 		} else if (item.checked && item.name === 'defence') {
 			attack.defence = item.value;

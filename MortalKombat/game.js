@@ -22,7 +22,7 @@ class Game{
 		console.log(p1);
 		const p2 = await this.getRandomPlayer();
 		console.log(p2);
-		
+
 		player1 = new Player({
 			...p1,
 			player: 1,
@@ -51,13 +51,31 @@ class Game{
 		return body;
 	}
 
-	fightHandler = (event) => {
-		event.preventDefault();
-		const {value: enemyValue, hit: enemyHit, defence: enemyDefence} = enemyAttack();
+	getFight = async ({ hit, defence }) => {
+		const body = fetch('http://reactmarathon-api.herokuapp.com/api/mk/player/fight',{
+			method: 'POST',
+			body: JSON.stringify({
+				hit,
+				defence
+			})
+		}).then(res => res.json());
+		return body;
+	}
 
-		const {value, hit, defence} = playerAttack(this.$formFight);
-		console.log('####: a', {value, hit, defence});
-		console.log('####: e', {value: enemyValue, hit: enemyHit, defence: enemyDefence});
+	fightHandler = async (event) => {
+		event.preventDefault();
+		//const {value: enemyValue, hit: enemyHit, defence: enemyDefence} = enemyAttack();
+		//const {value, hit, defence} = playerAttack(this.$formFight);
+		const hitDefence = playerAttack(this.$formFight);
+		console.log(hitDefence);
+		// console.log('####: a', {value, hit, defence});
+		// console.log('####: e', {value: enemyValue, hit: enemyHit, defence: enemyDefence});
+
+		const fightValues = await this.getFight(hitDefence);
+		console.log(fightValues);
+		const {value: enemyValue, hit: enemyHit, defence: enemyDefence} = fightValues.player2;
+		const {value, hit, defence} = fightValues.player1;
+
 
 		if (defence !== enemyHit) {
 			player1.changeHP(enemyValue);
