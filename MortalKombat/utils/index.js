@@ -1,17 +1,4 @@
-import { HIT, ATTACK, logs } from './data.js';
-
-
-export function changeHP(deltaHP) {
-	this.hp = this.hp > deltaHP ? this.hp - deltaHP : 0;	
-}
-
-export function elHP() {
-	return document.querySelector(`.player${this.player}  .life`);
-}
-
-export function renderHP() {
-	this.elHP().style.width = `${this.hp}%`;
-}
+import { HIT, ATTACK, logs } from '../constants/index.js';
 
 export const createElement = (tag, className) => {
 	const $tag = document.createElement(tag);
@@ -29,7 +16,7 @@ export function createReloadButton($arenas) {
 	$reloadButton.innerText = 'Reload';
 
 	$reloadButton.addEventListener('click', function() {
-		window.location.reload();
+		window.location.pathname = 'index.html';
 	});
 
 	$reloadButtonDiv.appendChild($reloadButton);
@@ -64,7 +51,7 @@ export function playerAttack (form) {
 
 	for (let item of form) {
 		if (item.checked && item.name === 'hit') {
-			attack.value = getValue(item.value);
+			//attack.value = getValue(item.value);
 			attack.hit = item.value;
 		} else if (item.checked && item.name === 'defence') {
 			attack.defence = item.value;
@@ -76,7 +63,7 @@ export function playerAttack (form) {
 	return attack;
 }
 
-const getRandom = (num) => Math.ceil(Math.random() * num);
+export const getRandom = (num) => Math.ceil(Math.random() * num);
 
 const getRandomTarget = () => ATTACK[getRandom(3) - 1];
 
